@@ -15,7 +15,11 @@ import org.junit.jupiter.api.TestInstance;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 
 @Epic("movie-catalog-api")
 @Feature("Movies Contract")
@@ -31,8 +35,6 @@ class MoviesContractTest extends BaseTest {
         moviesApi.deleteMovie(CONTRACT_MID);
     }
 
-    // GET /movies
-
     @Test
     void getMovies_responseMatchesPageMoviesSchema() {
         moviesApi.getMovies(MovieFilters.builder().size(100).build())
@@ -45,7 +47,7 @@ class MoviesContractTest extends BaseTest {
     void getMovies_everyItemMatchesMovieSchema() {
         PageResponse<Movie> page = moviesApi.getMovies(MovieFilters.builder().size(100).build())
                 .then().statusCode(200)
-                .extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .extract().as(new TypeRef<>() {});
 
         page.getContent().forEach(m -> {
             assertThat(m.getMid(), greaterThan(0));
@@ -68,8 +70,6 @@ class MoviesContractTest extends BaseTest {
                 .body("totalPages", instanceOf(Integer.class));
     }
 
-    // GET /movie/:mid
-
     @Test
     void getMovie_responseMatchesMovieSchema() {
         moviesApi.getMovie(1001)
@@ -90,8 +90,6 @@ class MoviesContractTest extends BaseTest {
                 .body("rating", instanceOf(String.class))
                 .body("studio", instanceOf(Integer.class));
     }
-
-    // POST /movie
 
     @Test
     void createMovie_createdResourceMatchesMovieSchema() {

@@ -10,7 +10,14 @@ import com.apitest.model.Studio;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.common.mapper.TypeRef;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -20,7 +27,9 @@ import java.util.stream.Collectors;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasSize;
 
 @Epic("movie-catalog-api")
 @Feature("Movies Regression")
@@ -32,7 +41,6 @@ class MoviesRegressionTest extends BaseTest {
     private final MoviesApi moviesApi = new MoviesApi();
     private final StudiosApi studiosApi = new StudiosApi();
 
-    // Test data — MIDs above 5000 avoid collisions with seeded fixture data
     private static final Movie REGRESSION_MOVIE = Movie.builder()
             .mid(5050).name("Regression Movie").genre("Comedy").price(7.99).rating("G").studio(1)
             .build();
@@ -53,13 +61,11 @@ class MoviesRegressionTest extends BaseTest {
         moviesApi.deleteMovie(5053);
     }
 
-    // GET /movies — collection integrity
-
     @Test @Order(1)
     void getMovies_returnsAllSeededMovies() {
         PageResponse<Movie> page = moviesApi.getMovies(MovieFilters.builder().size(100).build())
                 .then().statusCode(200)
-                .extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .extract().as(new TypeRef<>() {});
 
         assertThat(page.getTotalElements(), greaterThanOrEqualTo(30));
     }
@@ -69,7 +75,7 @@ class MoviesRegressionTest extends BaseTest {
         List<Integer> mids = moviesApi.getMovies(MovieFilters.builder().size(100).build())
                 .then().statusCode(200)
                 .extract().as(new TypeRef<PageResponse<Movie>>() {})
-                .getContent().stream().map(Movie::getMid).collect(Collectors.toList());
+                .getContent().stream().map(Movie::getMid).toList();
 
         assertThat(Set.copyOf(mids).size(), equalTo(mids.size()));
     }
@@ -85,9 +91,9 @@ class MoviesRegressionTest extends BaseTest {
     @Test @Order(4)
     void getMovies_allStudioIdsReferenceValidSeededStudio() {
         PageResponse<Movie> movies = moviesApi.getMovies(MovieFilters.builder().size(100).build())
-                .then().statusCode(200).extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .then().statusCode(200).extract().as(new TypeRef<>() {});
         PageResponse<Studio> studios = studiosApi.getStudios(0, 100)
-                .then().statusCode(200).extract().as(new TypeRef<PageResponse<Studio>>() {});
+                .then().statusCode(200).extract().as(new TypeRef<>() {});
 
         Set<Integer> validSids = studios.getContent().stream()
                 .map(Studio::getSid).collect(Collectors.toSet());
@@ -98,8 +104,6 @@ class MoviesRegressionTest extends BaseTest {
 
         assertThat(orphaned, hasSize(0));
     }
-
-    // GET /movie/:mid — individual retrieval
 
     @ParameterizedTest @Order(5)
     @ValueSource(ints = {1001, 1010, 1030})
@@ -125,8 +129,6 @@ class MoviesRegressionTest extends BaseTest {
         assertThat(single, equalTo(fromList));
     }
 
-    // POST /movie — write operations
-
     @Test @Order(10)
     void createMovie_returns201WithCorrectMid() {
         moviesApi.createMovie(REGRESSION_MOVIE)
@@ -149,8 +151,6 @@ class MoviesRegressionTest extends BaseTest {
                 .body("price", equalTo((float) REGRESSION_MOVIE.getPrice()));
     }
 
-    // PUT /movie/:mid — update
-
     @Test @Order(12)
     void setup_createMovieForUpdateTest() {
         Movie payload = Movie.builder().mid(5052).name("Before Update").genre("Horror")
@@ -170,8 +170,6 @@ class MoviesRegressionTest extends BaseTest {
                 .body("name", equalTo("After Update"))
                 .body("genre", equalTo("Thriller"));
     }
-
-    // DELETE /movie/:mid
 
     @Test @Order(14)
     void setup_createMovieForDeleteTest() {

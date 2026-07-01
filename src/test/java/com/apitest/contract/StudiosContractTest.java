@@ -12,7 +12,10 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 
 @Epic("movie-catalog-api")
 @Feature("Studios Contract")
@@ -33,7 +36,7 @@ class StudiosContractTest extends BaseTest {
     void getStudios_everyItemMatchesStudioSchema() {
         PageResponse<Studio> page = studiosApi.getStudios(0, 100)
                 .then().statusCode(200)
-                .extract().as(new TypeRef<PageResponse<Studio>>() {});
+                .extract().as(new TypeRef<>() {});
 
         page.getContent().forEach(s -> {
             assertThat(s.getSid(), greaterThan(0));

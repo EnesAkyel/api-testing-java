@@ -8,11 +8,22 @@ import com.apitest.model.Studio;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.common.mapper.TypeRef;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.lessThan;
 
 @Epic("movie-catalog-api")
 @Feature("Studios Integration")
@@ -37,8 +48,6 @@ class StudiosApiTest extends BaseTest {
         studiosApi.deleteStudio(TEST_STUDIO.getSid());
     }
 
-    // GET /studios
-
     @Test @Order(1)
     void getStudios_returns200WithPaginatedResponse() {
         studiosApi.getStudios()
@@ -61,12 +70,10 @@ class StudiosApiTest extends BaseTest {
     void getStudios_returnsAtLeast5SeededStudios() {
         PageResponse<Studio> page = studiosApi.getStudios(0, 100)
                 .then().statusCode(200)
-                .extract().as(new TypeRef<PageResponse<Studio>>() {});
+                .extract().as(new TypeRef<>() {});
 
         assertThat(page.getTotalElements(), greaterThanOrEqualTo(5));
     }
-
-    // POST /studio
 
     @Test @Order(4)
     void createStudio_returns201() {
@@ -85,8 +92,6 @@ class StudiosApiTest extends BaseTest {
                 .statusCode(409);
     }
 
-    // PUT /studio/:sid
-
     @Test @Order(6)
     void updateStudio_updatesExistingStudio() {
         Studio updated = Studio.builder().sid(TEST_STUDIO.getSid()).name("Updated Studio").build();
@@ -103,8 +108,6 @@ class StudiosApiTest extends BaseTest {
                 .then()
                 .statusCode(404);
     }
-
-    // DELETE /studio/:sid
 
     @Test @Order(8)
     void deleteStudio_returns200WithDeletedStudio() {

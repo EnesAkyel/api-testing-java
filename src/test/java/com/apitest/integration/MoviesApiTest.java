@@ -9,11 +9,26 @@ import com.apitest.model.PageResponse;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.restassured.common.mapper.TypeRef;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.everyItem;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.not;
 
 @Epic("movie-catalog-api")
 @Feature("Movies Integration")
@@ -38,8 +53,6 @@ class MoviesApiTest extends BaseTest {
         moviesApi.deleteMovie(TEST_MOVIE.getMid());
     }
 
-    // GET /movies
-
     @Test @Order(1)
     void getMovies_returns200WithPaginatedResponse() {
         moviesApi.getMovies()
@@ -62,7 +75,7 @@ class MoviesApiTest extends BaseTest {
     void getMovies_filtersByGenre() {
         PageResponse<Movie> page = moviesApi.getMovies(MovieFilters.builder().genre("Action").size(100).build())
                 .then().statusCode(200)
-                .extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .extract().as(new TypeRef<>() {});
 
         assertThat(page.getContent().size(), greaterThan(0));
         page.getContent().forEach(m -> assertThat(m.getGenre(), equalTo("Action")));
@@ -72,7 +85,7 @@ class MoviesApiTest extends BaseTest {
     void getMovies_filtersByRating() {
         PageResponse<Movie> page = moviesApi.getMovies(MovieFilters.builder().rating("PG-13").size(100).build())
                 .then().statusCode(200)
-                .extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .extract().as(new TypeRef<>() {});
 
         assertThat(page.getContent().size(), greaterThan(0));
         page.getContent().forEach(m -> assertThat(m.getRating(), equalTo("PG-13")));
@@ -82,7 +95,7 @@ class MoviesApiTest extends BaseTest {
     void getMovies_filtersByMaxPrice() {
         PageResponse<Movie> page = moviesApi.getMovies(MovieFilters.builder().maxPrice(5.0).size(100).build())
                 .then().statusCode(200)
-                .extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .extract().as(new TypeRef<>() {});
 
         page.getContent().forEach(m -> assertThat(m.getPrice(), lessThanOrEqualTo(5.0)));
     }
@@ -91,7 +104,7 @@ class MoviesApiTest extends BaseTest {
     void getMovies_filtersByMinPrice() {
         PageResponse<Movie> page = moviesApi.getMovies(MovieFilters.builder().minPrice(100.0).size(100).build())
                 .then().statusCode(200)
-                .extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .extract().as(new TypeRef<>() {});
 
         assertThat(page.getContent().size(), greaterThan(0));
         page.getContent().forEach(m -> assertThat(m.getPrice(), greaterThanOrEqualTo(100.0)));
@@ -100,14 +113,12 @@ class MoviesApiTest extends BaseTest {
     @Test @Order(7)
     void getMovies_paginatesCorrectly() {
         PageResponse<Movie> page0 = moviesApi.getMovies(MovieFilters.builder().page(0).size(5).build())
-                .then().statusCode(200).extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .then().statusCode(200).extract().as(new TypeRef<>() {});
         PageResponse<Movie> page1 = moviesApi.getMovies(MovieFilters.builder().page(1).size(5).build())
-                .then().statusCode(200).extract().as(new TypeRef<PageResponse<Movie>>() {});
+                .then().statusCode(200).extract().as(new TypeRef<>() {});
 
-        assertThat(page0.getContent().get(0).getMid(), not(equalTo(page1.getContent().get(0).getMid())));
+        assertThat(page0.getContent().getFirst().getMid(), not(equalTo(page1.getContent().getFirst().getMid())));
     }
-
-    // GET /movie/:mid
 
     @Test @Order(8)
     void getMovie_returnsSeededMovieById() {
@@ -125,8 +136,6 @@ class MoviesApiTest extends BaseTest {
                 .then()
                 .statusCode(404);
     }
-
-    // POST /movie
 
     @Test @Order(10)
     void createMovie_returns201() {
@@ -187,8 +196,6 @@ class MoviesApiTest extends BaseTest {
                 .body("errors.field", hasItem("rating"));
     }
 
-    // PUT /movie/:mid
-
     @Test @Order(16)
     void updateMovie_updatesExistingMovie() {
         Movie updated = Movie.builder().mid(TEST_MOVIE.getMid()).name("Updated Movie")
@@ -209,8 +216,6 @@ class MoviesApiTest extends BaseTest {
                 .statusCode(404);
     }
 
-    // GET /studios/:sid/movies
-
     @Test @Order(18)
     void getMoviesByStudio_returnsMoviesForKnownStudio() {
         moviesApi.getMoviesByStudio(1)
@@ -226,8 +231,6 @@ class MoviesApiTest extends BaseTest {
                 .then()
                 .statusCode(404);
     }
-
-    // DELETE /movie/:mid
 
     @Test @Order(20)
     void deleteMovie_returns200WithDeletedMovie() {
