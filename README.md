@@ -109,7 +109,7 @@ cd movie-catalog-api
 docker compose up -d --build
 ```
 
-Wait ~30s for Spring Boot + Postgres to initialise before running tests.
+Wait ~30s for Spring Boot + Postgres to initialize before running tests.
 
 ---
 
