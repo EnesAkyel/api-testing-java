@@ -47,14 +47,15 @@ class MoviesRegressionTest extends BaseTest {
 
     @BeforeAll
     void ensureClean() {
-        moviesApi.deleteMovie(REGRESSION_MOVIE.getMid());
-        moviesApi.deleteMovie(5051);
-        moviesApi.deleteMovie(5052);
-        moviesApi.deleteMovie(5053);
+        deleteTestData();
     }
 
     @AfterAll
     void cleanup() {
+        deleteTestData();
+    }
+
+    private void deleteTestData() {
         moviesApi.deleteMovie(REGRESSION_MOVIE.getMid());
         moviesApi.deleteMovie(5051);
         moviesApi.deleteMovie(5052);
