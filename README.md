@@ -14,16 +14,16 @@ Java counterpart to [api-testing-ts](https://github.com/EnesAkyel/api-testing-ts
 
 ## Tech Stack
 
-| Tool | Version | Purpose |
-|---|---|---|
-| Java | 21 | Language |
-| REST Assured | 6.0.0 | HTTP client, schema validation, assertions |
-| JUnit 5 | 5.10.2 | Test runner, parameterized tests, lifecycle |
-| Allure | 2.27.0 | Test reporting |
-| Jackson | 2.17.1 | JSON deserialization |
-| Lombok | 1.18.46 | Model boilerplate |
-| Owner | 1.0.12 | Config/env management |
-| Maven | 3.9+ | Build and dependency management |
+| Tool         | Version | Purpose                                     |
+|--------------|---------|---------------------------------------------|
+| Java         | 21      | Language                                    |
+| REST Assured | 6.0.0   | HTTP client, schema validation, assertions  |
+| JUnit 5      | 5.10.2  | Test runner, parameterized tests, lifecycle |
+| Allure       | 2.27.0  | Test reporting                              |
+| Jackson      | 3.2.0   | JSON deserialization                        |
+| Lombok       | 1.18.46 | Model boilerplate                           |
+| Owner        | 1.0.12  | Config/env management                       |
+| Maven        | 3.9+    | Build and dependency management             |
 
 ---
 
@@ -72,26 +72,26 @@ src/
 
 ## Test Suites
 
-| Suite | Tag | What it covers |
-|---|---|---|
-| Smoke | `@Tag("smoke")` | GET /movies 200, GET /movie/1001 200, GET /studios 200 |
-| Contract | `@Tag("contract")` | JSON Schema validation on all response shapes, pagination fields, per-item field types |
-| Integration | `@Tag("integration")` | Full CRUD for Movies and Studios, filter params, pagination, all negative paths (404, 409, 400 with field errors) |
-| Regression | `@Tag("regression")` | Collection integrity (30 movies, unique MIDs, no orphaned studio refs), data consistency between single and list endpoints, write lifecycle (create → update → delete) |
+| Suite       | Tag                   | What it covers                                                                                                                                                         |
+|-------------|-----------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Smoke       | `@Tag("smoke")`       | GET /movies 200, GET /movie/1001 200, GET /studios 200                                                                                                                 |
+| Contract    | `@Tag("contract")`    | JSON Schema validation on all response shapes, pagination fields, per-item field types                                                                                 |
+| Integration | `@Tag("integration")` | Full CRUD for Movies and Studios, filter params, pagination, all negative paths (404, 409, 400 with field errors)                                                      |
+| Regression  | `@Tag("regression")`  | Collection integrity (30 movies, unique MIDs, no orphaned studio refs), data consistency between single and list endpoints, write lifecycle (create → update → delete) |
 
 ### Comparison with api-testing-ts
 
 Same endpoints, same test IDs, same assertion logic — different language and tooling:
 
-| Concern | api-testing-ts | api-testing-java |
-|---|---|---|
-| HTTP client | Axios wrapper | REST Assured |
-| Schema validation | AJV + JSON Schema | REST Assured `json-schema-validator` |
-| Test runner | Jest | JUnit 5 |
-| Response timing | Custom `toRespondWithin` matcher | REST Assured `.time(lessThan(...))` |
-| Generic deserialization | TypeScript generics | Jackson `TypeRef` |
-| Test suites | 4 Jest config files | JUnit 5 `@Tag` + `-Dgroups` |
-| Report | Jest HTML + Allure | Allure |
+| Concern                 | api-testing-ts                   | api-testing-java                     |
+|-------------------------|----------------------------------|--------------------------------------|
+| HTTP client             | Axios wrapper                    | REST Assured                         |
+| Schema validation       | AJV + JSON Schema                | REST Assured `json-schema-validator` |
+| Test runner             | Jest                             | JUnit 5                              |
+| Response timing         | Custom `toRespondWithin` matcher | REST Assured `.time(lessThan(...))`  |
+| Generic deserialization | TypeScript generics              | Jackson `TypeRef`                    |
+| Test suites             | 4 Jest config files              | JUnit 5 `@Tag` + `-Dgroups`          |
+| Report                  | Jest HTML + Allure               | Allure                               |
 
 ---
 
