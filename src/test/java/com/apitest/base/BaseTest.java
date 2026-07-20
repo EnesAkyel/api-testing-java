@@ -9,10 +9,10 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
 
-public class BaseTest {
+public abstract class BaseTest {
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         RestAssured.baseURI = ConfigManager.getConfig().baseUrl();
         RestAssured.requestSpecification = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
