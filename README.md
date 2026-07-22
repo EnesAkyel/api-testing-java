@@ -1,9 +1,9 @@
 # api-testing-java
 
-![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Java](https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![REST Assured](https://img.shields.io/badge/REST_Assured-6.0-4DB33D?style=for-the-badge)
-![JUnit 5](https://img.shields.io/badge/JUnit_5-5.10-25A162?style=for-the-badge&logo=junit5&logoColor=white)
-![Allure](https://img.shields.io/badge/Allure-2.27-orange?style=for-the-badge)
+![JUnit 6](https://img.shields.io/badge/JUnit_6-6.1-25A162?style=for-the-badge&logo=junit5&logoColor=white)
+![Allure](https://img.shields.io/badge/Allure-2.35-orange?style=for-the-badge)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
 Java counterpart to [api-testing-ts](https://github.com/EnesAkyel/api-testing-ts). Same test coverage, same target API, different language and tool stack. Demonstrates that the same quality bar — smoke, contract, integration, regression — can be implemented in both TypeScript/Jest and Java/REST Assured.
@@ -16,11 +16,11 @@ Java counterpart to [api-testing-ts](https://github.com/EnesAkyel/api-testing-ts
 
 | Tool         | Version | Purpose                                     |
 |--------------|---------|---------------------------------------------|
-| Java         | 21      | Language                                    |
-| REST Assured | 6.0.0   | HTTP client, schema validation, assertions  |
-| JUnit 5      | 5.10.2  | Test runner, parameterized tests, lifecycle |
-| Allure       | 2.27.0  | Test reporting                              |
-| Jackson      | 3.2.0   | JSON deserialization                        |
+| Java         | 25      | Language                                    |
+| REST Assured | 6.0.1   | HTTP client, schema validation, assertions  |
+| JUnit        | 6.1.2   | Test runner, parameterized tests, lifecycle |
+| Allure       | 2.35.3  | Test reporting                              |
+| Jackson      | 3.2.1   | JSON deserialization                        |
 | Lombok       | 1.18.46 | Model boilerplate                           |
 | Owner        | 1.0.12  | Config/env management                       |
 | Maven        | 3.9+    | Build and dependency management             |
@@ -87,17 +87,17 @@ Same endpoints, same test IDs, same assertion logic — different language and t
 |-------------------------|----------------------------------|--------------------------------------|
 | HTTP client             | Axios wrapper                    | REST Assured                         |
 | Schema validation       | AJV + JSON Schema                | REST Assured `json-schema-validator` |
-| Test runner             | Jest                             | JUnit 5                              |
+| Test runner             | Jest                             | JUnit 6                              |
 | Response timing         | Custom `toRespondWithin` matcher | REST Assured `.time(lessThan(...))`  |
 | Generic deserialization | TypeScript generics              | Jackson `TypeRef`                    |
-| Test suites             | 4 Jest config files              | JUnit 5 `@Tag` + `-Dgroups`          |
+| Test suites             | 4 Jest config files              | JUnit 6 `@Tag` + `-Dgroups`          |
 | Report                  | Jest HTML + Allure               | Allure                               |
 
 ---
 
 ## Prerequisites
 
-- Java 21+
+- Java 25+
 - Maven 3.9+
 - movie-catalog-api running on `http://localhost:8080/api/v1`
 
