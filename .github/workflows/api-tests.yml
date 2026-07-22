@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  JAVA_VERSION: '21'
+  JAVA_VERSION: '25'
 
 jobs:
   test:
@@ -27,7 +27,7 @@ jobs:
           repository: EnesAkyel/movie-catalog-api
           path: movie-catalog-api
 
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
@@ -91,7 +91,7 @@ jobs:
           repository: EnesAkyel/movie-catalog-api
           path: movie-catalog-api
 
-      - name: Set up JDK 21
+      - name: Set up JDK 25
         uses: actions/setup-java@v5
         with:
           java-version: ${{ env.JAVA_VERSION }}
