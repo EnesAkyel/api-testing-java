@@ -98,7 +98,7 @@ Same endpoints, same test IDs, same assertion logic — different language and t
 ## Prerequisites
 
 - Java 25+
-- Maven 3.9+
+- Maven 3.9.16
 - movie-catalog-api running on `http://localhost:8080/api/v1`
 
 ### Start movie-catalog-api
