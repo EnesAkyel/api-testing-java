@@ -1,5 +1,6 @@
 package com.apitest.base;
 
+import com.apitest.auth.AuthUtil;
 import com.apitest.config.ConfigManager;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
@@ -16,6 +17,7 @@ public abstract class BaseTest {
         RestAssured.baseURI = ConfigManager.getConfig().baseUrl();
         RestAssured.requestSpecification = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
+                .addHeader("Authorization", "Bearer " + AuthUtil.getToken())
                 .addFilter(new AllureRestAssured())
                 .addFilter(new RequestLoggingFilter())
                 .addFilter(new ResponseLoggingFilter())

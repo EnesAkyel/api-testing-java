@@ -37,13 +37,17 @@ jobs:
       - name: Start movie-catalog-api
         run: docker compose up -d --build
         working-directory: movie-catalog-api
+        env:
+          AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       - name: Wait for API to be ready
         working-directory: movie-catalog-api
         run: |
           echo "Waiting for API..."
           for i in $(seq 1 30); do
-            if curl -sf http://localhost:8080/api/v1/movies > /dev/null; then
+            if curl -sf http://localhost:8080/v3/api-docs > /dev/null; then
               echo "API is ready after $((i * 5))s"
               exit 0
             fi
@@ -56,12 +60,21 @@ jobs:
 
       - name: Smoke tests
         run: mvn test -Dgroups=smoke
+        env:
+          AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
 
       - name: Contract tests
         run: mvn test -Dgroups=contract
+        env:
+          AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
 
       - name: Integration tests
         run: mvn test -Dgroups=integration
+        env:
+          AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
 
       - name: Generate Allure report
         if: always()
@@ -101,13 +114,17 @@ jobs:
       - name: Start movie-catalog-api
         run: docker compose up -d --build
         working-directory: movie-catalog-api
+        env:
+          AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       - name: Wait for API to be ready
         working-directory: movie-catalog-api
         run: |
           echo "Waiting for API..."
           for i in $(seq 1 30); do
-            if curl -sf http://localhost:8080/api/v1/movies > /dev/null; then
+            if curl -sf http://localhost:8080/v3/api-docs > /dev/null; then
               echo "API is ready after $((i * 5))s"
               exit 0
             fi
@@ -120,6 +137,9 @@ jobs:
 
       - name: Regression tests
         run: mvn test -Dgroups=regression
+        env:
+          AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
+          AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
 
       - name: Generate Allure report
         if: always()
