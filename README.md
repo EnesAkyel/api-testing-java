@@ -18,9 +18,9 @@ Java counterpart to [api-testing-ts](https://github.com/EnesAkyel/api-testing-ts
 |--------------|---------|---------------------------------------------|
 | Java         | 25      | Language                                    |
 | REST Assured | 6.0.1   | HTTP client, schema validation, assertions  |
-| JUnit        | 6.1.2   | Test runner, parameterized tests, lifecycle |
-| Allure       | 2.35.3  | Test reporting                              |
-| Jackson      | 3.2.1   | JSON deserialization                        |
+| JUnit        | 6.1.3   | Test runner, parameterized tests, lifecycle |
+| Allure       | 2.35.4  | Test reporting                              |
+| Jackson      | 3.2.2   | JSON deserialization                        |
 | Lombok       | 1.18.46 | Model boilerplate                           |
 | Owner        | 1.0.12  | Config/env management                       |
 | Maven        | 3.9+    | Build and dependency management             |
@@ -140,6 +140,18 @@ Or serve it live:
 
 ```bash
 mvn allure:serve
+```
+
+---
+
+## Checking for Dependency Upgrades
+
+```bash
+# List dependencies with newer versions available
+mvn versions:display-dependency-updates
+
+# List available plugin updates
+mvn versions:display-plugin-updates
 ```
 
 ---
