@@ -3,7 +3,7 @@
 ![Java](https://img.shields.io/badge/Java-25-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![REST Assured](https://img.shields.io/badge/REST_Assured-6.0-4DB33D?style=for-the-badge)
 ![JUnit 6](https://img.shields.io/badge/JUnit_6-6.1-25A162?style=for-the-badge&logo=junit5&logoColor=white)
-![Allure](https://img.shields.io/badge/Allure-2.35-orange?style=for-the-badge)
+![Allure](https://img.shields.io/badge/Allure-3.0-orange?style=for-the-badge)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 
 Java counterpart to [api-testing-ts](https://github.com/EnesAkyel/api-testing-ts). Same test coverage, same target API, different language and tool stack. Demonstrates that the same quality bar — smoke, contract, integration, regression — can be implemented in both TypeScript/Jest and Java/REST Assured.
@@ -19,7 +19,7 @@ Java counterpart to [api-testing-ts](https://github.com/EnesAkyel/api-testing-ts
 | Java         | 25      | Language                                    |
 | REST Assured | 6.0.1   | HTTP client, schema validation, assertions  |
 | JUnit        | 6.1.3   | Test runner, parameterized tests, lifecycle |
-| Allure       | 2.35.5  | Test reporting                              |
+| Allure       | 3.1.0   | Test reporting                              |
 | Jackson      | 3.2.2   | JSON deserialization                        |
 | Lombok       | 1.18.48 | Model boilerplate                           |
 | Owner        | 1.0.12  | Config/env management                       |
